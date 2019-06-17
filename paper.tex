@@ -122,6 +122,46 @@ A conformation foldable by $\Xi$ is \textit{terminal} if none of its elongations
 %An oritatami system with the empty rule set just folds into an arbitrary elongation of its seed nondeterministically. 
 %Thus, the rule set is reasonably assumed non-empty. 
 
+\section{Folding an infinite binary counter}
+
+\subsection{General idea}
+Basically, an folding process of counter is the same way as Geary et al \cite{counter2016}.
+The construction proceeds in zig-zags.
+Each pass is 3-rows thick and folds each part of the bead into a glider or turn module.
+Each pass extends to straight while folding into glider and folds its last module folds into turn module and starts next pass.
+The zig pass, folding from right to left, counts up in the current value of the counter.
+The zag pass, folding from left to right, formats and copy to downward the value which the zig pass represents.
+
+The module is semantically divided into 4 parts, called modules:
+\begin{itemize}
+\item Module F (beads 1--30): the Format module
+\item Module L (beads 31--66): the Left-Turn module
+\item Module H (bead 67--96): the Half-Adder module
+\item Module R (bead 97--132): the Right-Turn module 
+\end{itemize}
+
+\subsubsection{Encoding}
+The current value of the counter is encoded in standard binary with the most significant bit to the left.
+Binary is encoded into a specific folding of the module F and H.
+In zig pass, folding of module H corresponds to module F in a zag pass: namely H0 for 0, and H1 for 1.
+In addition, start position of modules represents the carry: carry = 0 if module H starts to fold in the top row; carry = 1 if module H start to fold from the bottom row.
+On the other hand in zag pass, folding of module F corresponding to module H in a zig pass: namely F0 for 0, and F1 for 1.
+
+\subsubsection{In the zig pass ($\leftarrow$)}
+Module H read from the row above the value encoded into folding in the module F during the previous zag-phase, and fold into a shape H00, H10, H01, H11.
+H$xc$ is corresponding to the case where $x$ is the bit read in the row above and $c$ is the carry. 
+In the zig pass module R, F, and L just propagate the carry value to the next.
+
+When the zig pass reaches the left most part, module L collaborates with above turn module and it is folded turn module which reverses the folding direction for next zag pass except carry = 1.
+At this time, if module L has a carry, folding of module L is glider and it go straight in order to expand bit width after that next module L turns to zag pass while folding turn module.
+%H -> He1
+
+\subsubsection{In the zag pass ($\rightarrow$)}
+Module F read form the row above H$xc$, and fold into a shape F0, F1.
+F$y$ is corresponding to the case where $y = (x + c) mod 2$.
+There are no carry propagation and the module L, H, R fold into Lbc, Hn, Rb in this pass.
+
+When the zag pass reaches the right most part. module R collaborates with above turn module and it is folded turn module which reverses the folding direction for next zag pass.
 
 \bibliographystyle{splncs03}
 \bibliography{sofsem2020}
