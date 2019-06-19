@@ -51,6 +51,17 @@ abstract
 %------------------------------------------------------
 	\section{Introduction}
 %------------------------------------------------------
+Our body consists many proteins which is based on genetic sequence in DNA.
+DNA sequence has to be copied in order to make proteins because DNA is in cell nucleus.
+It is copied to RNA (and its sequence is called \textit{transcript}) by a RNA polymerase and delivered to out of nucleus.
+A transcript consists four types nucleobases A, U, G, and C, and a nucleobase are called \textit{bead}
+Moreover, they form hydrogen bonds mainly between A and U, and between G and C, then they begin to form at the same time synthesizing.
+Once the bead is fixed after that it can not change the position.
+
+
+
+
+
 
 %------------------------------------------------------
 	\section{Preliminaries}
@@ -158,10 +169,16 @@ At this time, if module L has a carry, folding of module L is glider and it go s
 
 \subsubsection{In the zag pass ($\rightarrow$)}
 Module F read form the row above H$xc$, and fold into a shape F0, F1.
-F$y$ is corresponding to the case where $y = (x + c) mod 2$.
+F$y$ is corresponding to the case where $y = (x + c)$ mod $2$.
 There are no carry propagation and the module L, H, R fold into Lbc, Hn, Rb in this pass.
 
 When the zag pass reaches the right most part. module R collaborates with above turn module and it is folded turn module which reverses the folding direction for next zag pass.
+
+\subsection{Example of folding}
+Let's run an infinite counter from 1 bit width.
+
+\subsubsection{The seed conformation}
+
 
 \bibliographystyle{splncs03}
 \bibliography{sofsem2020}
