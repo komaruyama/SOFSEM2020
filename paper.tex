@@ -61,7 +61,16 @@ By repeating this method, transcript form a 3D shape.
 
 A shape of RNA depends on the DNA sequence.
 Geary, Rothemund, and Andrsen have succeeded in experimentally making 2D RNA tiles (Fig.\ref{fig:rna_origami}) by repeatedly copying a specific DNA sequence \cite{GearyRothemundAndersen2014}.
-Then, Oritatami System was designed as a mathematical model that the process of RNA production and Fig.\ref{fig:origami_on_oritatami} is the 2D RNA tile which is represented on Oritatami System.
+Then, Oritatami System was designed as a mathematical model that the process of RNA production \cite{counter2016} and Fig.\ref{fig:origami_on_oritatami} is the 2D RNA tile which is represented on Oritatami System.
+Oritatami system treats transcript and nucleobase as paths and vertices which called \textit{bead}, respectively, moreover, they are arranged on a triangular grid.
+The system takes transcript as an input and output an terminal conformation.
+Geary et al. implemented binary counter in this system \cite{counter2016}.
+This counter is folded in zigzags, and each row represents a counted number.
+Then, this counter is given a bit width as an input to the system before transfer begins, and encounters nondeterminism if it carries beyond that bit width.
+Since it is running on deterministic system, it halts when it becomes nondeterministic.
+
+In this paper, based on the implementation method of this counter, we implement a counter which defined the behavior that extends the bit width when it overflows.
+
 
 
 \begin{figure}[tb]
