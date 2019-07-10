@@ -206,9 +206,101 @@ When the zag pass reaches the right most part. module R collaborates with above 
 
 \subsection{Example of folding}
 Let's run an infinite counter from 1 bit width.
+The seed is encoded count number "0" (Fig, \ref{fig:counterex0}).
 
-\subsubsection{The seed conformation}
+\subsubsection{The first zig pass ($\leftarrow$)}
+A zig path starts with carry equal to 1 each time, that is, starts folding from the bottom row.
+In zig path, the number of count is count up.
+\begin{itemize}
+\item{[First module F (Light Green)]} \\Normally, module H is folded above module F, and the seed corresponding to this module H now represents None.
+Then, module F forms a shape which represents None and propagates carry equal to 1. (Fig.\ref{fig:counterex2})
 
+\item{[First module L (Light Blue)]} \\Since the seed here does not have a turn signal, module L forms glider and propagates carry while extending straight. (Fig.\ref{fig:counterex2})
+
+\item{[First module H (Pink)]} \\Since the seed is encoded 0 and the carry equal to 1, HA folds into H01, which represents 1 and is output of carry equal 0. (Fig.\ref{fig:counterex3})
+
+\item{[First module R (Yellow) and 2nd module F]} \\Both module form glider which start from top row and end to top row, in order to propagate carry. (Fig.\ref{fig:counterex5})
+
+\item{[2nd module L]} \\The left end of the seed is in the form of a L-turn, which is the signal to turn module L.
+Now, since module L starts from top row, it can bind to the seed of representing L-turn and it forms turn. (Fig.\ref{fig:counterex6})
+\end{itemize}
+
+\subsubsection{The first zag pass ($\rightarrow$)}
+A zag path starts folding from the bottom row but it is carry equal to 0.
+In zag path, the number of count is copying.
+
+\begin{itemize}
+\item{[module H and module R]} \\Since the module F of last module in zig pass represents None,
+module H folds into Hn also representing None. The module R form glider for margin. (Fig.\ref{fig:counterex8})
+
+\item{[module F, L, and H]} \\There are three types of brick, H01, H10 and He1, representing 1 in module H, and different signals are defined as 1 any. Then, module F folds into brick F1 no matter which module H is above, representing 1. The module L folds glider and the module H folds brick Hn. (Fig.\ref{fig:counterex11})
+
+\item{[module R]} \\The right end of the seed is in the form of a R-turn so that the module R forms turn.
+
+\end{itemize}
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\linewidth]{fig/svg/CounterEx0.pdf}
+\caption{
+The first step of folded transcript of an infinite binay counter. The seed is encoded 0.
+}
+\label{fig:counterex0}
+\end{figure}
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\linewidth]{fig/svg/CounterEx2.pdf}
+\caption{
+Folded module F and module L. Both modules propagate the carry.
+}
+\label{fig:counterex2}
+\end{figure}
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\linewidth]{fig/svg/CounterEx3.pdf}
+\caption{
+Folded module H to H01. From the seed is encoded "0" and input carry equal to 1, To H01 represents "1" and output carry equal to "0".
+}
+\label{fig:counterex3}
+\end{figure}
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\linewidth]{fig/svg/CounterEx5.pdf}
+\caption{
+Folded module R and module F. Both modules propagate the carry.
+}
+\label{fig:counterex5}
+\end{figure}
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\linewidth]{fig/svg/CounterEx6.pdf}
+\caption{
+Module L is folded to turn shape and end to bottom row in first zag part.
+}
+\label{fig:counterex6}
+\end{figure}
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\linewidth]{fig/svg/CounterEx8.pdf}
+\caption{
+Folded module H and module R. Both modules start bottom row and module H represents None.
+}
+\label{fig:counterex8}
+\end{figure}
+
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\linewidth]{fig/svg/CounterEx11.pdf}
+\caption{
+Folded module F, module L, and module H.  The module F forms F1 and formats module H's 1 in order to be able to read for next module H.
+}
+\label{fig:counterex11}
+\end{figure}
 
 \bibliographystyle{splncs03}
 \bibliography{sofsem2020}
