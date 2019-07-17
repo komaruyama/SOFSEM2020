@@ -204,103 +204,107 @@ There are no carry propagation and the module L, H, R fold into Lbc, Hn, Rb in t
 
 When the zag pass reaches the right most part. module R collaborates with above turn module and it is folded turn module which reverses the folding direction for next zag pass.
 
-\subsection{Example of folding}
+\subsection{Example of folding first zigzag}
 Let's run an infinite counter from 1 bit width.
-The seed is encoded count number "0" (Fig, \ref{fig:counterex0}).
+The seed is encoded with "0", and the starts from bottom row, that is, giving a carry for the least significant bit.
 
 \subsubsection{The first zig pass ($\leftarrow$)}
-A zig path starts with carry equal to 1 each time, that is, starts folding from the bottom row.
-In zig path, the number of count is count up.
+In Fig, \ref{fig:counter1stzig}, the zig pass folds as follows.
 \begin{itemize}
 \item{[First module F (Light Green)]} \\Normally, module H is folded above module F, and the seed corresponding to this module H now represents None.
-Then, module F forms a shape which represents None and propagates carry equal to 1. (Fig.\ref{fig:counterex2})
+Then, module F forms a shape which represents None and propagates carry equal to 1.
+\item{[First module L (Light Blue)]} \\Since the seed here does not have a turn signal, module L forms glider and propagates carry while extending straight.
 
-\item{[First module L (Light Blue)]} \\Since the seed here does not have a turn signal, module L forms glider and propagates carry while extending straight. (Fig.\ref{fig:counterex2})
+\item{[First module H (Pink)]} \\The seed is encoded 0 and module folding starts from the bottom row, that is, the carry equal to 1.
+Then, HA folds into H01, which represents 1 and is output of carry equal 0.
 
-\item{[First module H (Pink)]} \\Since the seed is encoded 0 and the carry equal to 1, HA folds into H01, which represents 1 and is output of carry equal 0. (Fig.\ref{fig:counterex3})
+\item{[First module R (Yellow) and 2nd module F]} \\Both module form glider which start from top row and end to top row, in order to propagate carry equal 0.
 
-\item{[First module R (Yellow) and 2nd module F]} \\Both module form glider which start from top row and end to top row, in order to propagate carry. (Fig.\ref{fig:counterex5})
-
-\item{[2nd module L]} \\The left end of the seed is in the form of a L-turn, which is the signal to turn module L.
-Now, since module L starts from top row, it can bind to the seed of representing L-turn and it forms turn. (Fig.\ref{fig:counterex6})
 \end{itemize}
 
 \subsubsection{The first zag pass ($\rightarrow$)}
-A zag path starts folding from the bottom row but it is carry equal to 0.
-In zag path, the number of count is copying.
+In Fig. \ref{fig:counter1stzig}, it is folded until second module F, and module L is transferred as the next transcript.
+Fig. \ref{fig:counter1stzag} shows how zag pass is folded.
+Now, there is a Turn Signal at the left end of the seed, so L's transcript binds to its signal and loses the shape of glider in order to turn.
+In addition, the turned module L forms a Turn Signal at its end.
 
+The zag pass folds as follows.
 \begin{itemize}
 \item{[module H and module R]} \\Since the module F of last module in zig pass represents None,
-module H folds into Hn also representing None. The module R form glider for margin. (Fig.\ref{fig:counterex8})
-
-\item{[module F, L, and H]} \\There are three types of brick, H01, H10 and He1, representing 1 in module H, and different signals are defined as 1 any. Then, module F folds into brick F1 no matter which module H is above, representing 1. The module L folds glider and the module H folds brick Hn. (Fig.\ref{fig:counterex11})
-
-\item{[module R]} \\The right end of the seed is in the form of a R-turn so that the module R forms turn.
+module H folds into Hn also representing None. The module R form glider for margin.
+\item{[module F, L, and H]} \\There are three types of brick, H01, H10 and He1, representing 1 in module H, and different signals are defined as 1 any. Then, module F folds into brick F1 no matter which module H is above, representing 1. The module L folds glider and the module H folds brick Hn.
 
 \end{itemize}
 \begin{figure}[tb]
 \centering
-\includegraphics[width=\linewidth]{fig/svg/CounterEx0.pdf}
+\includegraphics[width=\linewidth]{fig/svg/CounterEx5_1.pdf}
 \caption{
-The first step of folded transcript of an infinite binay counter. The seed is encoded 0.
+The first zig pass.
+The seed is encoded with "0", and the counter increments it by giving a carry.
+Module H outputs "1" as a sum and cancels the carry.
 }
-\label{fig:counterex0}
+\label{fig:counter1stzig}
 \end{figure}
 
 \begin{figure}[tb]
 \centering
-\includegraphics[width=\linewidth]{fig/svg/CounterEx2.pdf}
+\includegraphics[width=\linewidth]{fig/svg/CounterEx11_1.pdf}
 \caption{
-Folded module F and module L. Both modules propagate the carry.
+Module L turns and start the first zag pass.
+Since there is a Turn Signal at the left end of the seed, when the carry is 0, module L turns and at the end of L forms Turn Signal.
+In zag pass, module F reads the output of module H and copies it down,
 }
-\label{fig:counterex2}
+\label{fig:counter1stzag}
 \end{figure}
 
-\begin{figure}[tb]
-\centering
-\includegraphics[width=\linewidth]{fig/svg/CounterEx3.pdf}
-\caption{
-Folded module H to H01. From the seed is encoded "0" and input carry equal to 1, To H01 represents "1" and output carry equal to "0".
-}
-\label{fig:counterex3}
+\subsection{Conformations of Module H}
+The half adder module H forms five different paths as shown in Fig. \ref{fig:halfadders}.
+Module H reads the already folded bead (F0 or F1) at above as one of the inputs, and determines the other input depending on the folding starts (top or bottom).
+Module H forms four bricks of H00, H01, H10, and H11 for each input.
+Then, the bricks outputs the sum as beads of bottom row and also outputs carry depending on whether module H is folded top or bottom except He1.
+Brick He1 is the first folded module H after overflow.
+Since this counter uses three row of gliders as a self-standing method, module H consisting of 30 beads has an even width, and when it starts folding from the bottom, folding ends at the bottom.
+That is why brick He1 ends folding at the bottom and outputs carry equal to 0.
+\begin{figure}[h]
+\begin{tabular}{c}
+ \begin{minipage}{0.5\linewidth}
+  \centering
+   \includegraphics[width=0.6\linewidth]{fig/svg/H00_1.pdf}
+ \end{minipage}
+ 
+ \begin{minipage}{0.5\linewidth}
+  \centering
+   \includegraphics[width=0.6\linewidth]{fig/svg/H01_1.pdf}
+
+ \end{minipage}
+ \end{tabular}
+
+\begin{tabular}{c}
+\ \\
+ \begin{minipage}{0.33\linewidth}
+  \centering
+   \includegraphics[width=0.9\linewidth]{fig/svg/H10_1.pdf}
+ \end{minipage}
+ 
+ \begin{minipage}{0.33\linewidth}
+  \centering
+   \includegraphics[width=0.9\linewidth]{fig/svg/H11_1.pdf}
+ \end{minipage}
+ 
+  \begin{minipage}{0.33\linewidth}
+  \centering
+   \includegraphics[width=0.9\linewidth]{fig/svg/He1_1.pdf}
+
+ \end{minipage}
+ \end{tabular}
+ \caption{The paths of module H in zig pass}
+ \label{fig:halfadders}
 \end{figure}
 
-\begin{figure}[tb]
-\centering
-\includegraphics[width=\linewidth]{fig/svg/CounterEx5.pdf}
-\caption{
-Folded module R and module F. Both modules propagate the carry.
-}
-\label{fig:counterex5}
-\end{figure}
+\subsection{Example of over flow}
 
-\begin{figure}[tb]
-\centering
-\includegraphics[width=\linewidth]{fig/svg/CounterEx6.pdf}
-\caption{
-Module L is folded to turn shape and end to bottom row in first zag part.
-}
-\label{fig:counterex6}
-\end{figure}
-
-\begin{figure}[tb]
-\centering
-\includegraphics[width=\linewidth]{fig/svg/CounterEx8.pdf}
-\caption{
-Folded module H and module R. Both modules start bottom row and module H represents None.
-}
-\label{fig:counterex8}
-\end{figure}
-
-
-\begin{figure}[tb]
-\centering
-\includegraphics[width=\linewidth]{fig/svg/CounterEx11.pdf}
-\caption{
-Folded module F, module L, and module H.  The module F forms F1 and formats module H's 1 in order to be able to read for next module H.
-}
-\label{fig:counterex11}
-\end{figure}
+\section{How to implement each module with oritatami system}
+Each module changes the output depending on the start position of folding and the environment.
 
 \bibliographystyle{splncs03}
 \bibliography{sofsem2020}
