@@ -209,7 +209,7 @@ Let's run an infinite counter from 1 bit width.
 The seed is encoded with "0", and the starts from bottom row, that is, giving a carry for the least significant bit.
 
 \subsubsection{The first zig pass ($\leftarrow$)}
-In Fig, \ref{fig:counter1stzig}, the zig pass folds as follows.
+In Fig,~\ref{fig:counter1stzig}, the zig pass folds as follows.
 \begin{itemize}
 \item{[First module F (Light Green)]} \\Normally, module H is folded above module F, and the seed corresponding to this module H now represents None.
 Then, module F forms a shape which represents None and propagates carry equal to 1.
@@ -258,13 +258,16 @@ In zag pass, module F reads the output of module H and copies it down,
 \end{figure}
 
 \subsection{Conformations of Module H}
-The half adder module H forms five different paths as shown in Fig. \ref{fig:halfadders}.
+The half adder module H forms five different paths as shown in Fig.~\ref{fig:halfadders}.
 Module H reads the already folded bead (F0 or F1) at above as one of the inputs, and determines the other input depending on the folding starts (top or bottom).
 Module H forms four bricks of H00, H01, H10, and H11 for each input.
 Then, the bricks outputs the sum as beads of bottom row and also outputs carry depending on whether module H is folded top or bottom except He1.
 Brick He1 is the first folded module H after overflow.
 Since this counter uses three row of gliders as a self-standing method, module H consisting of 30 beads has an even width, and when it starts folding from the bottom, folding ends at the bottom.
 That is why brick He1 ends folding at the bottom and outputs carry equal to 0.
+
+In the output sum, module H has 2 types of beads representing "0" and  3 types of beads representing "1".
+Then, module F is folded to F0 and F1 in Fig.~\ref{fig:formatters} according to the beads corresponding to 0 (H00, H11) and 1 (H01, H10, He1), respectively, to format beads representing a value.
 \begin{figure}[h]
 \begin{tabular}{c}
  \begin{minipage}{0.5\linewidth}
@@ -301,7 +304,25 @@ That is why brick He1 ends folding at the bottom and outputs carry equal to 0.
  \label{fig:halfadders}
 \end{figure}
 
-\subsection{Example of over flow}
+\begin{figure}[h]
+\begin{tabular}{c}
+ \begin{minipage}{0.5\linewidth}
+  \centering
+   \includegraphics[width=0.6\linewidth]{fig/svg/F0_1.pdf}
+ \end{minipage}
+ 
+ \begin{minipage}{0.5\linewidth}
+  \centering
+   \includegraphics[width=0.6\linewidth]{fig/svg/F1_1.pdf}
+
+ \end{minipage}
+ \end{tabular}
+ \caption{The paths of module F in zag pass}
+ \label{fig:formatters}
+\end{figure}
+
+
+\subsection{Example of overflow}
 
 \section{How to implement each module with oritatami system}
 Each module changes the output depending on the start position of folding and the environment.
