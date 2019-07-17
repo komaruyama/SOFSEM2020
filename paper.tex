@@ -323,6 +323,68 @@ Then, module F is folded to F0 and F1 in Fig.~\ref{fig:formatters} according to 
 
 
 \subsection{Example of overflow}
+Oritatami system proceeds to further fold the counter transcript form the state shown in Fig.~\ref{fig:counter1stzag}, it overflows (Fig.~\ref{fig:overflowex1}).
+If it does not overflow, the next module L will bind to above Turn Signal and turn.
+However, since the carry overflows, module L's folding starts from bottom row and does not reach Turn Signal, so L forms a self standing glider shape, goes straight and extends the zig pass (Fig.~\ref{fig:overflowex2}).
+Then the folding of module H begins and this H also becomes a glider shape (Fig.~\ref{fig:overflowex3}).
+There is nothing above the folded module H (brick He1), but the original value is recognized as "0" and He1 catches the carry.
+However, the end of folding He1 is bottom row because He1 is glider, so for He1 only, the counter determins that the folding end position is bottom row as carry=0.
+In this way, the infinite counter extends the bit width after it overflows.
+
+Subsequently, module R and F are folded, and then module L folding starts (Fig.~\ref{fig:overflowex4}).
+Since module L turns by binding to Turn Signal, it is necessary to give signal for turn in order to move to zag pass from here.
+Therefore, let the top of folded module F be Turn Signal.
+Normally, there are folded beads above module F, so module L can not bind to F's Turn Signal.
+However, only when it overflows, above F becomes blank, so L turns by being folded there (Fig.~\ref{fig:overflowex5}).
+The turned module L forms a Turn Signal at the end, and folding of zag pass starts.
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\linewidth]{fig/svg/CounterEx13_1.pdf}
+\caption{
+Reach the left end with carry.
+Even if transcript of module L sticks to Turn Signal, it can not bind because the distance is long.
+}
+\label{fig:overflowex1}
+\end{figure}
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\linewidth]{fig/svg/CounterEx14_1.pdf}
+\caption{
+Module L forms a glider shape without binding to Turn Signal and goes straight on. 
+}
+\label{fig:overflowex2}
+\end{figure}
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\linewidth]{fig/svg/CounterEx15_1.pdf}
+\caption{
+Module H catches the overflowed carry but module H can not cancel the carry because it must be a self standing glider.
+That is way the last bead of this module H is folded at the bottom but carry = 0. 
+}
+\label{fig:overflowex3}
+\end{figure}
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\linewidth]{fig/svg/CounterEx17_1.pdf}
+\caption{
+Module R and F are folded, and then folding of module L starts, but without Turn Signal, L can not turn.
+Then, turn module L by making the top of module F the Turn Signal.
+}
+\label{fig:overflowex4}
+\end{figure}
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\linewidth]{fig/svg/CounterEx18_1.pdf}
+\caption{
+Module L turns by module F's Turn Signal and zag pass starts.
+Also, the end of L takes the form of Turn Signal.
+}
+\label{fig:overflowex5}
+\end{figure}
 
 \section{How to implement each module with oritatami system}
 Each module changes the output depending on the start position of folding and the environment.
