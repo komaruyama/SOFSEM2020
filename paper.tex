@@ -32,12 +32,13 @@
 %\titlerunning{}
 \author{
 Kohei Maruyama\inst{1}\thanks{Primary corresponding author (\email{k.maruyama@uec.ac.jp})} \and
-Shinnosuke Seki\inst{1}\thanks{Secondary corresponding author (\email{s.seki@uec.ac.jp})}
+Shinnosuke Seki\inst{1,2}\thanks{Secondary corresponding author (\email{s.seki@uec.ac.jp})}
 }
 \institute{
 The University of Electro-Communications, 
 %Graduate School of Informatics and Engineering, 
-1-5-1 Chofugaoka, Chofu, Tokyo, 1828585, Japan \\
+1-5-1 Chofugaoka, Chofu, Tokyo, 1828585, Japan \and
+ENS Lyon
 }
 
 \begin{document}
@@ -57,7 +58,7 @@ Counting is one of the most essential tasks for computing; as well known, it suf
 Nature has been counting billions of days using molecular ``circadian clockwork'' which is ``as complicated and as beautiful as the wonderful chronometers developed in the 18th century''  \cite{McClung2006}. 
 Nowadays, developments in molecular self-assembly technology enable us to design molecules to count. 
 Evans has recently demonstrated a DNA tile self-assembly system that counts accurately in binary from a programmed initial count until it overflows \cite{EvansPhD}. 
-In its foundational theory of molecular self-assembly, such binary counters have proved their versatility, being used to assemble shapes of particular size \cite{AdChGoHu2001,RothemundWinfree2000}, towards self-assembly of fractals \cite{MasudaSekiUbukata2018}, as an infinite scaffold to simulate all Turing machines in parallel in order to prove undecidability of nondeterminism in the abstract tile-assembly model \cite{BrChDoKaSe2013}, and so on. 
+In its foundational theory of molecular self-assembly, such binary counters have proved their versatility, being used to assemble shapes of particular size \cite{AdChGoHu2001,RothemundWinfree2000}, towards self-assembly of fractals \cite{MasudaSekiUbukata2018}, as an infinite scaffold to simulate all Turing machines in parallel in order to prove undecidability of nondeterminism in the abstract tile-assembly model \cite{BrChDoKaSe2013}, to name a few. 
 
 \begin{figure}[tb]
 \centering
@@ -127,7 +128,7 @@ In this paper, we endow this counter, or more precisely, its structural module $
 
 %copy from TAMC2019 paper
 
-Let $\Sigma$ be a finite set of types of abstract molecules, or \textit{beads}. 
+Let $\Sigma$ be a finite alphabet, whose element should be regarded as type of abstract molecule, or \textit{beads}. 
 A bead of type $a \in \Sigma$ is called an $a$-bead. 
 By $\Sigma^*$ and $\Sigma^\omega$, we denote the set of finite sequences of beads and that of one-way infinite sequences of beads, respectively. 
 The empty sequence is denoted by $\lambda$. 
@@ -137,7 +138,6 @@ For two indices $i, j$ with $1 \le i \le j \le n$, we let $w[i..j]$ refer to the
 For $k \ge 1$, $w[1..k]$ is called a \textit{prefix} of $w$. 
 
 Oritatami systems fold their transcript, which is a sequence of beads, over the triangular grid graph $\mathbb{T} = (V, E)$ cotranscriptionally. %↓
-We designate one point in $V$ as the origin $O$ of $\mathbb{T}$. 
 For a point $p \in V$, let $\hexagon_p^d$ denote the set of points which lie in the regular hexagon of radius $d$ centered at the point $p$. 
 Note that $\hexagon_p^d$ consists of $3d(d+1)+1$ points. %←
 A directed path $P = p_1 p_2 \cdots p_n$ in $\mathbb{T}$ is a sequence of \textit{pairwise-distinct} points $p_1, p_2, \ldots, p_n \in V$ such that $\{p_i, p_{i+1}\} \in E$ for all $1 \le i < n$. 
@@ -158,13 +158,11 @@ Given a rule set $R$ and an $R$-valid conformation $C_1 = (P, w, H)$, we say tha
 Note that $C_2$ is also $R$-valid. 
 This operation is recursively extended to the elongation by a finite sequence of beads as: for any conformation $C$, $C \xrightarrow{R}_\lambda^* C$; and for a finite sequence of beads $w \in \Sigma^*$ and a bead $b \in \Sigma$, a conformation $C_1$ is elongated to a conformation $C_2$ by $wb$, written as $C_1 \xrightarrow{R}_{wb}^* C_2$, if there is a conformation $C'$ that satisfies $C_1 \xrightarrow{R}_w^* C'$ and $C' \xrightarrow{R}_b C_2$. 
 
-An \textit{oritatami system} (OS) $\Xi = (\Sigma, R, \delta, \alpha, \sigma, w)$ is composed of
+An \textit{oritatami system} (OS) $\Xi$ is a tuple $(\Sigma, R, \delta, \alpha, \sigma, w)$, where $\Sigma$ and $R$ are defined as above, while
 \begin{itemize}
-\item a set $\Sigma$ of bead types, 
-\item a rule set $R \subseteq \Sigma \times \Sigma$, 
 \item a positive integer $\delta$ called the \textit{delay}, 
 \item a positive integer $\alpha$ called the \textit{arity}, %←arityの行だけ要らない？
-\item an initial $R$-valid conformation $\sigma \in C_{\le \alpha}(\Sigma)$ called the \textit{seed}, whose first bead is assumed to be at the origin $O$ without loss of generality, 
+\item an initial $R$-valid conformation $\sigma \in C_{\le \alpha}(\Sigma)$ called the \textit{seed},
 \item a (possibly infinite) \textit{transcript} $w \in \Sigma^* \cup \Sigma^\omega$, which is to be folded upon the seed by stabilizing beads of $w$ one at a time so as to minimize energy collaboratively with the succeeding $\delta{-}1$ nascent beads. 
 \end{itemize}
 %
@@ -194,22 +192,49 @@ A conformation foldable by $\Xi$ is \textit{terminal} if none of its elongations
 \section{Folding an infinite binary counter}
 
 \subsection{General idea}
-Basically, an folding process of counter is the same way as Geary et al \cite{counter2016}.
-The construction proceeds in zig-zags.
-Each pass is 3-rows thick and folds each part of the bead into a glider or turn module.
-Each pass extends to straight while folding into glider and folds its last module folds into turn module and starts next pass.
-The zig pass, folding from right to left, counts up in the current value of the counter.
-The zag pass, folding from left to right, formats and copy to downward the value which the zig pass represents.
+Between two consecutive overflows, the proposed system behaves in the same way as the finite binary counter of Geary et al. \cite{GeMeScSe2019}.
+Its transcript folds (downward in figures throughout this paper) in a zigzag manner macroscopically.
+A zig, folding from right to left, increments the current value of the counter by 1.
+The succeeding zag, folding from left to right, formats the incremented value for the sake of next zig and copies it downward.
+Unlike the counter of Geary et al., when a zig encounters overflow, it does not abort but extends the current value by 1 bit.
 
-The module is semantically divided into 4 parts, called modules:
+%Each zig or zag is 3-rows thick.
+%Each pass extends to straight while folding into glider and folds its last module folds into turn module and starts next pass.
+
+
+The transcript of our counter is periodic.
+Its period 1-2-3- $\cdots$ -132 is semantically divided into the following 4 subsequences, called \textit{modules}:
 \begin{itemize}
-\item Module F (beads 1--30): the Format module
-\item Module L (beads 31--66): the Left-Turn module
-\item Module H (bead 67--96): the Half-Adder module
-\item Module R (bead 97--132): the Right-Turn module 
+\item 1--30: Format module or F
+\item 31--66: Left-Turn module or L
+\item 67--96: Half-Adder module or H
+\item 97--132: Right-Turn module  or R
 \end{itemize}
+Modules are to play their roles in expected environments by folding into respective conformations which should be pairwise-distinct enough to be distinguishable by other modules transcribed later.
+Such expected conformations are called a \textit{brick}.
+For example, module F encounters only the four environments shown in Fig.~\ref{fig:formatters} where it takes the four bricks, respectively.
 
 \subsubsection{Encoding}
+The binary representation of the initial value, $b_{k-1} b_{k-2} \cdots b_1 b_0$ is encoded on the seed in the following format
+\begin{equation} \label{eq:zagencoding}
+64{-}65{-}66{-}\left( \prod^0_{i = k-1} \bigl(  w_{Hn} w_{Rb} w_{Fb_i} w_{Lbn} \bigr) \right) w_{Hn}
+\end{equation}
+where $w_{Hn}, w_{Rb}, w_{Fb_i}, w_{Lbn}$ are sequences of bead types exposed downward by modules H, R, F, L when they fold into bricks Hn, Rb, F$b_i$, Lbn, respectively; these bricks can be found in Figs.~\ref{fig:halfadders},\ref{fig:rightturns}, \ref{fig:formatters}, and \ref{fig:leftturns}.
+%$w_{Hn} = 67{-}76{-}77{-}78{-}79{-}88{-}89{-}90{-}91{-}96$ \\
+%$w_{Rb} = 97{-}102{-}103{-}108{-}109{-}114{-}115{-}120{-}121{-}126{-}127{-}132$\\
+%$w_{Lbn} = 31{-}36{-}37{-}42{-}43{-}48{-}49{-}54{-}55{-}64{-}65{-}66$
+
+%64 65 66
+%67 76 77 78 79 88 89 90 91 96
+%97 102 103 108 109 114 115 120 121 126 127 132
+%
+%1 10 11 12 13 22 23 24 25 30
+%
+%31 36 37 42 43 48 49 54 55 64 65 66
+%67 76 77 78 79 88 89 90 91 96
+%97 108 109 120
+
+
 The current value of the counter is encoded in standard binary with the most significant bit to the left.
 Binary is encoded into a specific folding of the module F and H.
 In zig pass, folding of module H corresponds to module F in a zag pass: namely H0 for 0, and H1 for 1.
@@ -268,7 +293,9 @@ module H folds into Hn also representing None. The module R form glider for marg
 \includegraphics[width=\linewidth]{fig/svg/CounterEx5_1.pdf}
 \caption{
 The first zig pass.
-The seed is encoded with "0", and the counter increments it by giving a carry.
+The seed is encoded with "0" same as bottom of F0(
+\textcircled{\scriptsize 1}{-}\textcircled{\scriptsize 10}{-}\textcircled{\scriptsize 11}{-}\textcircled{\scriptsize 12}{-}\textcircled{\scriptsize 13}{-}\textcircled{\scriptsize 22}{-}\textcircled{\scriptsize 23}{-}\textcircled{\scriptsize 24}{-}\textcircled{\scriptsize 25}{-}\textcircled{\scriptsize 30}),
+ and the counter increments it by giving a carry.
 Module H outputs "1" as a sum and cancels the carry.
 }
 \label{fig:counter1stzig}
@@ -298,41 +325,60 @@ In the output sum, module H has 2 types of beads representing "0" and  3 types o
 Then, module F is folded to F0 and F1 in Fig.~\ref{fig:formatters} according to the beads corresponding to 0 (H00, H11) and 1 (H01, H10, He1), respectively, to format beads representing a value.
 \begin{figure}[h]
 \begin{tabular}{c}
- \begin{minipage}{0.5\linewidth}
+ \begin{minipage}{0.3\linewidth}
   \centering
-   \includegraphics[width=0.6\linewidth]{fig/svg/H00_1.pdf}
+   \includegraphics[width=0.9\linewidth]{fig/svg/H00_1.pdf}
  \end{minipage}
  
- \begin{minipage}{0.5\linewidth}
+ \begin{minipage}{0.3\linewidth}
   \centering
-   \includegraphics[width=0.6\linewidth]{fig/svg/H01_1.pdf}
+   \includegraphics[width=0.9\linewidth]{fig/svg/H01_1.pdf}
 
+ \end{minipage}
+ 
+  \begin{minipage}{0.3\linewidth}
+  \centering
+   \includegraphics[width=0.9\linewidth]{fig/svg/He1_1.pdf}
  \end{minipage}
  \end{tabular}
 
 \begin{tabular}{c}
 \ \\
- \begin{minipage}{0.33\linewidth}
+ \begin{minipage}{0.3\linewidth}
   \centering
    \includegraphics[width=0.9\linewidth]{fig/svg/H10_1.pdf}
  \end{minipage}
  
- \begin{minipage}{0.33\linewidth}
+ \begin{minipage}{0.3\linewidth}
   \centering
    \includegraphics[width=0.9\linewidth]{fig/svg/H11_1.pdf}
  \end{minipage}
  
-  \begin{minipage}{0.33\linewidth}
+  \begin{minipage}{0.3\linewidth}
   \centering
-   \includegraphics[width=0.9\linewidth]{fig/svg/He1_1.pdf}
+   \includegraphics[width=0.9\linewidth]{fig/svg/Hn_1.pdf}
 
  \end{minipage}
  \end{tabular}
- \caption{The paths of module H in zig pass}
+ \caption{All the 6 bricks of Module H. In zags, H always folds into the bottom-right brick Hn. }
  \label{fig:halfadders}
 \end{figure}
 
 \begin{figure}[h]
+\begin{tabular}{c}
+ \begin{minipage}{0.5\linewidth}
+  \centering
+   \includegraphics[width=0.6\linewidth]{fig/svg/Fnt_1.pdf}
+ \end{minipage}
+ 
+ \begin{minipage}{0.5\linewidth}
+  \centering
+   \includegraphics[width=0.6\linewidth]{fig/svg/Fnb_1.pdf}
+
+ \end{minipage}
+ \end{tabular}
+\ \\
+\ \\
 \begin{tabular}{c}
  \begin{minipage}{0.5\linewidth}
   \centering
@@ -345,7 +391,7 @@ Then, module F is folded to F0 and F1 in Fig.~\ref{fig:formatters} according to 
 
  \end{minipage}
  \end{tabular}
- \caption{The paths of module F in zag pass}
+ \caption{All the 4 bricks of Module F: The 2 bricks at the top are for zigs while the 2 bottom are for zags. }
  \label{fig:formatters}
 \end{figure}
 
@@ -427,12 +473,12 @@ At this time, the top of module F functions as Turn Signal, but this is the beha
 \begin{tabular}{c}
  \begin{minipage}{0.5\linewidth}
   \centering
-   \includegraphics[width=0.8\linewidth]{fig/svg/Lt_1.pdf}
+   \includegraphics[width=0.8\linewidth]{fig/svg/Lt_3.pdf}
  \end{minipage}
  
  \begin{minipage}{0.5\linewidth}
   \centering
-   \includegraphics[width=0.8\linewidth]{fig/svg/Lbc_1.pdf}
+   \includegraphics[width=0.8\linewidth]{fig/svg/Lbc_3.pdf}
 
  \end{minipage}
  \end{tabular}
@@ -440,7 +486,7 @@ At this time, the top of module F functions as Turn Signal, but this is the beha
 \ \\
 \ \\
   \centering
-   \includegraphics[width=0.4\linewidth]{fig/svg/Ltrc_1.pdf}
+   \includegraphics[width=0.4\linewidth]{fig/svg/Ltrc_3.pdf}
 
 
 \begin{tabular}{c}
@@ -448,12 +494,12 @@ At this time, the top of module F functions as Turn Signal, but this is the beha
 \ \\
  \begin{minipage}{0.5\linewidth}
   \centering
-   \includegraphics[width=0.9\linewidth]{fig/svg/Lbe_1.pdf}
+   \includegraphics[width=0.9\linewidth]{fig/svg/Lbe_3.pdf}
  \end{minipage}
  
   \begin{minipage}{0.5\linewidth}
   \centering
-   \includegraphics[width=0.9\linewidth]{fig/svg/Ltre_1.pdf}
+   \includegraphics[width=0.9\linewidth]{fig/svg/Ltre_3.pdf}
 
  \end{minipage}
  \end{tabular}
@@ -461,55 +507,136 @@ At this time, the top of module F functions as Turn Signal, but this is the beha
  \label{fig:leftturns}
 \end{figure}
 
-\section{How to implement each module with oritatami system}
-Each module changes the output depending on the start position of folding and the environment.
+\begin{figure}[tb]
+\begin{tabular}{c}
+ \begin{minipage}{0.5\linewidth}
+  \centering
+   \includegraphics[width=0.8\linewidth]{fig/svg/Rt_1.pdf}
+ \end{minipage}
+ 
+ \begin{minipage}{0.5\linewidth}
+  \centering
+   \includegraphics[width=0.8\linewidth]{fig/svg/Rb_1.pdf}
 
+ \end{minipage}
+
+\vspace{10mm}
+
+\ \\
+  \raggedright
+   \includegraphics[width=0.3\linewidth]{fig/svg/Rtr_1.pdf}
+
+ \end{tabular}
+ \caption{The paths of module R}
+ \label{fig:rightturns}
+\end{figure}
+
+\section{The brick automaton}
+Beads which has already been folded around, that is, the environment decide which module transcript will be.
+The environmental transition is represented Fig.~\ref{fig:brickautomaton}.
+In addition, each symbol written as a state transition is conformation such as Fig.~\ref{fig:transitionconformation}
+%\centering
+%\begin{table}[tb]
+%\begin{tabular}{c c c c}
+%\begin{minipage}{25mm}
+%	\centering
+%       \scalebox{0.5}{\includegraphics{fig/svg/bglider.pdf}}
+%\end{minipage} &
+%\begin{minipage}{25mm}
+%	\centering
+%       \scalebox{0.5}{\includegraphics{fig/svg/tglider.pdf}}
+%\end{minipage} &
+%\begin{minipage}{30mm}
+%	\centering
+%       \scalebox{0.5}{\includegraphics{fig/svg/plane.pdf}}
+%\end{minipage} &
+%\begin{minipage}{25mm}
+%	\centering
+%       \scalebox{0.5}{\includegraphics{fig/svg/spiral.pdf}}
+%\end{minipage}\\
+%
+%\begin{minipage}{25mm}
+%	\centering
+%       \scalebox{0.5}{\includegraphics{fig/svg/horn.pdf}}
+%\end{minipage} &
+%\begin{minipage}{30mm}
+%	\centering
+%       \scalebox{0.5}{\includegraphics{fig/svg/kar.pdf}}
+%\end{minipage} &
+%\begin{minipage}{25mm}
+%	\centering
+%       \scalebox{0.5}{\includegraphics{fig/svg/roof.pdf}}
+%\end{minipage}\\
+%
+%\begin{minipage}{25mm}
+%	\centering
+%       \scalebox{0.5}{\includegraphics{fig/svg/fault.pdf}}
+%\end{minipage} &
+%\begin{minipage}{30mm}
+%	\centering
+%       \scalebox{0.5}{\includegraphics{fig/svg/cliff.pdf}}
+%\end{minipage}\\
+%
+%\end{tabular}
+%\end{table}
+
+\begin{figure}[tb]
 \centering
-\begin{table}[tb]
-\begin{tabular}{c c c c}
-\begin{minipage}{25mm}
-	\centering
-       \scalebox{0.5}{\includegraphics{fig/svg/bglider.pdf}}
-\end{minipage} &
-\begin{minipage}{25mm}
-	\centering
-       \scalebox{0.5}{\includegraphics{fig/svg/tglider.pdf}}
-\end{minipage} &
-\begin{minipage}{30mm}
-	\centering
-       \scalebox{0.5}{\includegraphics{fig/svg/plane.pdf}}
-\end{minipage} &
-\begin{minipage}{25mm}
-	\centering
-       \scalebox{0.5}{\includegraphics{fig/svg/spiral.pdf}}
-\end{minipage}\\
+\includegraphics[width=\textwidth]{fig/svg/inf-ai_c_2.pdf}
+\vspace*{5mm}
 
-\begin{minipage}{25mm}
-	\centering
-       \scalebox{0.5}{\includegraphics{fig/svg/horn.pdf}}
-\end{minipage} &
-\begin{minipage}{30mm}
-	\centering
-       \scalebox{0.5}{\includegraphics{fig/svg/kar.pdf}}
-\end{minipage} &
-\begin{minipage}{25mm}
-	\centering
-       \scalebox{0.5}{\includegraphics{fig/svg/roof.pdf}}
-\end{minipage}\\
+\scalebox{0.8}{
+\begin{tikzpicture}
+	\node[anchor=north, inner sep=0] (tg) at (0,0) {
+ 		   \includegraphics[width=0.2\textwidth]{fig/svg/tglider.pdf}
+	};
+	\node[anchor=north, inner sep=0] (bg) at (3,0) {
+ 		   \includegraphics[width=0.2\textwidth]{fig/svg/bglider.pdf}
+	};
+	\node[anchor=north, inner sep=0] (pl) at (6,0) {
+ 		   \includegraphics[width=0.2\textwidth]{fig/svg/plane.pdf}
+	};
+	\node[anchor=north, inner sep=0] (sp) at (9,0) {
+ 		   \includegraphics[width=0.2\textwidth]{fig/svg/spiral.pdf}
+	};
+	
+	\node[anchor=north, inner sep=0] (ho) at (-1.5,-3) {
+ 		   \includegraphics[width=0.2\textwidth]{fig/svg/horn.pdf}
+	};
+	\node[anchor=north, inner sep=0] (ka) at (1.5,-3) {
+ 		   \includegraphics[width=0.15\textwidth]{fig/svg/kar.pdf}
+	};
+	\node[anchor=north, inner sep=0] (ro) at (4.5,-3) {
+ 		   \includegraphics[width=0.2\textwidth]{fig/svg/roof.pdf}
+	};
+	\node[anchor=north, inner sep=0] (fa) at (7.5,-3) {
+ 		   \includegraphics[width=0.2\textwidth]{fig/svg/fault.pdf}
+	};
+	\node[anchor=north, inner sep=0] (ci) at (10.5,-3) {
+ 		   \includegraphics[width=0.2\textwidth]{fig/svg/cliff.pdf}
+	};
+	
+	\node[below, shift=(-90:0.8)] at (tg) {t};
+	\node[below, shift=(-90:0.8)] at (bg) {b};
+	\node[below, shift=(-90:0.8)] at (pl) {p};
+	\node[below, shift=(-90:0.8)] at (sp) {s};
 
-\begin{minipage}{25mm}
-	\centering
-       \scalebox{0.5}{\includegraphics{fig/svg/fault.pdf}}
-\end{minipage} &
-\begin{minipage}{30mm}
-	\centering
-       \scalebox{0.5}{\includegraphics{fig/svg/cliff.pdf}}
-\end{minipage}\\
+	\node[below, shift=(-90:1)] at (ho) {h};
+	\node[below, shift=(-90:1)] at (ka) {k};
+	\node[below, shift=(-90:0.8)] at (ro) {r};
+	\node[below, shift=(-90:0.8)] at (fa) {f};
+	\node[below, shift=(-90:0.8)] at (ci) {c};
+\end{tikzpicture}
+}
+%\caption{Transition conformations}
+%\label{fig:transitionconformation}
+%\end{figure}
 
 
-\end{tabular}
-\end{table}
-
+%\begin{figure}[tb]
+\caption{The brick automaton of infinite binary counter}
+\label{fig:brickautomaton}
+\end{figure}
 
 \begin{thebibliography}{1}
 
@@ -563,9 +690,13 @@ Erik Winfree,
 Algorithmic Self-Assembly of {DNA}, 
 Ph.D. thesis, Caltech, 1998.
 
-\end{thebibliography}
+\bibitem{GeMeScSe2018}
+Cody Geary and Pierre-\'Etienne Meunier and Nicolas Schabanel and Shinonsuke Seki,
+Proving the {T}uring Universality of Oritatami Cotranscriptional Folding,
+Proc. ISAAC 2018,
+23:1 -- 23:13,2018.
 
-\bibliographystyle{splncs03}
-\bibliography{sofsem2020}
+
+\end{thebibliography}
   
 \end{document}
