@@ -413,15 +413,71 @@ Even if transcript of module L sticks to Turn Signal, it can not bind because th
 \label{fig:overflowex1}
 \end{figure}
 
-Let us see how the subsequence $(FLHR)^kF$ folds into a zig; for $k=1$ and the current value 0 see Fig.~\ref{fig:counter1stzig}.
-The zig is initially fed with carry by being forced to start folding at the bottom and the carry is propagated by modules F, L, and R in the way just explained.
-The first instance of H is thus fed with carry and folds into \texttt{H01} if the bit encoded above is 0, as illustrated in Fig.~\ref{fig:counter1stzig}, or \texttt{H11} if the bit is rather 1.
+Let us see how the subsequence $(FLHR)^kF$ folds into a zig; for $k=1$ and the current value 0, see Fig.~\ref{fig:counter1stzig}.
+The zig is initially fed with carry by being forced to start folding at the bottom and the carry is propagated through the first instances of F and L in the way just explained toward the first instance of H.
+This H is thus fed with carry and folds into \texttt{H01} if the bit encoded above is 0, as illustrated in Fig.~\ref{fig:counter1stzig}, or \texttt{H11} if the bit is rather 1.
 \texttt{H01} ends at the top, corresponding to no-carry.
 This absence of carry propagates through the succeeding modules leftward.
 As a result, the zig ends, or more precisely an instance of F ends folding at the bottom if the current value is overflowed (Fig.~\ref{fig:overflowex1}), or at the top otherwise. (Fig.~\ref{fig:counter1stzig}).
 An instance of L is to be transcribed next.
 It folds either into \texttt{Lcrn} for (normal) carriage-return unless the current value is overflowed, or into \texttt{Lbe} at an overflow.
+
+\subsubsection{In the zag ($\rightarrow$)}
+Here, the value incremented in the previous zig is formatted so as to be exposed below in the format \eqref{eq:zagencoding} for the next zig.
+A subsequence $(HRFL)^kH$ of the transcript folds into the zag, where $k$ is the bit width of the incremented value.
+Both of the bricks of L for carriage-return, i.e., \texttt{Lcrn} and \texttt{Lcre}, ends at the bottom so that zags start at the bottom.
+The first instances of H and R fold into \texttt{Hn} and \texttt{Rb}, respectively.
+Hence, the next F starts at the bottom and takes the brick \texttt{F}$y$ under the module H  that takes the brick \texttt{H}$xc$ in the previous zig, where $y$ is the output of the module, that is, $y = (x+c) \mod 2$.
+Both of these bricks \texttt{F0} and \texttt{F1} end at the bottom so that the instance of L folds into \texttt{Lbn}.
+
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\linewidth]{fig/svg/CounterEx14_1.pdf}
+\caption{
+Module L forms a glider shape without binding to Turn Signal and goes straight on. 
+}
+\label{fig:overflowex2}
+\end{figure}
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\linewidth]{fig/svg/CounterEx15_1.pdf}
+\caption{
+Module H catches the overflowed carry but module H can not cancel the carry because it must be a self standing glider.
+That is way the last bead of this module H is folded at the bottom but carry = 0. 
+}
+\label{fig:overflowex3}
+\end{figure}
+
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\linewidth]{fig/svg/CounterEx17_1.pdf}
+\caption{
+Module R and F are folded, and then folding of module L starts, but without Turn Signal, L can not turn.
+Then, turn module L by making the top of module F the Turn Signal.
+}
+\label{fig:overflowex4}
+\end{figure}
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\linewidth]{fig/svg/CounterEx18_1.pdf}
+\caption{
+Module L turns by module F's Turn Signal and zag pass starts.
+Also, the end of L takes the form of Turn Signal.
+}
+\label{fig:overflowex5}
+\end{figure}
+
+
+
 % Lbeの後の話 Lcreまで
+In the case of overflow, instance of H,  R, and F are transcribed following \texttt{Lbc} and they fold into \texttt{He1}, \texttt{Rb}, and \texttt{Fnb}, respectively.
+Next instance of L which is transcribed after \texttt{Fnb} carriage-return for the next zag.
+However, if its instance turn, Turn Signal must be present around there so the top of \texttt{Fnb} is given the role of Turn Signal.
+Unless the count overflows, there is a brick above \texttt{Fnb} as shown in Fig.~\ref{fig:overflowex1}, so the top of \texttt{Fnb} is hidden, but when it overflows, Turn Signal is exposed.
 
 Module H read from the row above the value encoded into folding in the module F during the previous zag-phase, and fold into a shape H00, H10, H01, H11.
 H$xc$ is corresponding to the case where $x$ is the bit read in the row above and $c$ is the carry. 
@@ -510,45 +566,6 @@ Normally, there are folded beads above module F, so module L can not bind to F's
 However, only when it overflows, above F becomes blank, so L turns by being folded there (Fig.~\ref{fig:overflowex5}).
 The turned module L forms a Turn Signal at the end, and folding of zag pass starts.
 
-
-\begin{figure}[tb]
-\centering
-\includegraphics[width=\linewidth]{fig/svg/CounterEx14_1.pdf}
-\caption{
-Module L forms a glider shape without binding to Turn Signal and goes straight on. 
-}
-\label{fig:overflowex2}
-\end{figure}
-
-\begin{figure}[tb]
-\centering
-\includegraphics[width=\linewidth]{fig/svg/CounterEx15_1.pdf}
-\caption{
-Module H catches the overflowed carry but module H can not cancel the carry because it must be a self standing glider.
-That is way the last bead of this module H is folded at the bottom but carry = 0. 
-}
-\label{fig:overflowex3}
-\end{figure}
-
-\begin{figure}[tb]
-\centering
-\includegraphics[width=\linewidth]{fig/svg/CounterEx17_1.pdf}
-\caption{
-Module R and F are folded, and then folding of module L starts, but without Turn Signal, L can not turn.
-Then, turn module L by making the top of module F the Turn Signal.
-}
-\label{fig:overflowex4}
-\end{figure}
-
-\begin{figure}[tb]
-\centering
-\includegraphics[width=\linewidth]{fig/svg/CounterEx18_1.pdf}
-\caption{
-Module L turns by module F's Turn Signal and zag pass starts.
-Also, the end of L takes the form of Turn Signal.
-}
-\label{fig:overflowex5}
-\end{figure}
 
 \subsection{Conformations of Module L}
 The left turn module L forms five different paths as shown in Fig~\ref{fig:leftturns}.
