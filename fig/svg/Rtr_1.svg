@@ -7,12 +7,12 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   viewBox="-1500 -20 299.11682 255.82701"
+   viewBox="-1500 -20 303.17932 256.82703"
    version="1.1"
    id="svg584"
    sodipodi:docname="Rtr_1.svg"
-   width="299.11682"
-   height="255.82701"
+   width="303.17932"
+   height="256.82703"
    inkscape:version="0.92.2 (5c3e80d, 2017-08-06)">
   <metadata
      id="metadata590">
@@ -37,8 +37,8 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1415"
-     inkscape:window-height="828"
+     inkscape:window-width="1500"
+     inkscape:window-height="762"
      id="namedview586"
      showgrid="false"
      fit-margin-top="0"
@@ -47,9 +47,9 @@
      fit-margin-bottom="0"
      inkscape:zoom="1.6721727"
      inkscape:cx="171.06758"
-     inkscape:cy="144.31658"
-     inkscape:window-x="1128"
-     inkscape:window-y="173"
+     inkscape:cy="145.31658"
+     inkscape:window-x="214"
+     inkscape:window-y="57"
      inkscape:window-maximized="0"
      inkscape:current-layer="svg584" />
   <line
@@ -60,7 +60,7 @@
      id="line20-4"
      style="fill:none;stroke:#665782;stroke-width:5" />
   <rect
-     style="fill:#e7f1fa;fill-opacity:0.52040815;stroke:#403fa1;stroke-width:3.917;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.35204083"
+     style="fill:#e7f1fa;fill-opacity:0.52040818;stroke:#403fa1;stroke-width:3.91700006;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.35204085"
      id="rect7376-2"
      width="117.68953"
      height="28.332092"
@@ -986,7 +986,7 @@
      cx="-1444"
      cy="224.82701"
      id="circle342"
-     style="fill:#ffffff;stroke:#ffc14f;stroke-width:2" />
+     style="fill:#ffffff;stroke:#b45800;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
   <text
      font-size="8.00"
      x="-1444"
@@ -1394,7 +1394,7 @@
      r="10"
      cx="-1399"
      id="circle532"
-     style="fill:#ffffff;stroke:#ffc14f;stroke-width:2" />
+     style="fill:#ffffff;stroke:#b45800;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none" />
   <text
      x="-1399"
      y="150.38501"
@@ -1518,7 +1518,7 @@
        y="207.12917"
        x="-1255.1801"
        id="tspan1406"
-       sodipodi:role="line">Rtr </tspan></text>
+       sodipodi:role="line">Rcr </tspan></text>
   <circle
      cx="-1279"
      cy="-8.9999838"

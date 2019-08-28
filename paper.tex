@@ -27,17 +27,17 @@
 \usepackage{hyperref}
 
 
-\title{Counting infinitely by Oritatami co-transcriptional folding}
+\title{Counting infinitely by oritatami co-transcriptional folding}
 
 %\titlerunning{}
 \author{
-Kohei Maruyama\inst{1}\thanks{Primary corresponding author (\email{k.maruyama@uec.ac.jp})} \and
-Shinnosuke Seki\inst{1,2}\thanks{Secondary corresponding author (\email{s.seki@uec.ac.jp})}
+Kohei Maruyama\inst{1}\and
+Shinnosuke Seki\inst{1,2}
 }
 \institute{
 The University of Electro-Communications, 
 %Graduate School of Informatics and Engineering, 
-1-5-1 Chofugaoka, Chofu, Tokyo, 1828585, Japan \and
+1-5-1 Chofugaoka, Chofu, Tokyo, 1828585, Japan \email{\{k.maruyama, s.seki\}@uec.ac.jp}\and
 \'{E}cole Normale Superi\'{e}ure de Lyon, 46 all\'{e}e d'Italie, 69007, Lyon, France
 }
 
@@ -160,8 +160,8 @@ This operation is recursively extended to the elongation by a finite sequence of
 
 An \textit{oritatami system} (OS) $\Xi$ is a tuple $(\Sigma, R, \delta, \alpha, \sigma, w)$, where $\Sigma$ and $R$ are defined as above, while
 \begin{itemize}
-\item a positive integer $\delta$ called the \textit{delay}, 
-\item a positive integer $\alpha$ called the \textit{arity}, %←arityの行だけ要らない？
+\item a positive integer $\delta$ called \textit{delay}, 
+\item a positive integer $\alpha$ called \textit{arity}, %←arityの行だけ要らない？
 \item an initial $R$-valid conformation $\sigma \in C_{\le \alpha}(\Sigma)$ called the \textit{seed},
 \item a (possibly infinite) \textit{transcript} $w \in \Sigma^* \cup \Sigma^\omega$, which is to be folded upon the seed by stabilizing beads of $w$ one at a time so as to minimize energy collaboratively with the succeeding $\delta{-}1$ nascent beads. 
 \end{itemize}
@@ -195,12 +195,12 @@ A conformation foldable by $\Xi$ is \textit{terminal} if none of its elongations
 \begin{tabular}{c}
  \begin{minipage}{0.5\linewidth}
   \centering
-   \includegraphics[width=0.6\linewidth]{fig/svg/Fnt_1.pdf}
+   \includegraphics[width=0.8\linewidth]{fig/svg/Fnt_1.pdf}
  \end{minipage}
  
  \begin{minipage}{0.5\linewidth}
   \centering
-   \includegraphics[width=0.6\linewidth]{fig/svg/Fnb_1.pdf}
+   \includegraphics[width=0.8\linewidth]{fig/svg/Fnb_1.pdf}
 
  \end{minipage}
  \end{tabular}
@@ -209,97 +209,29 @@ A conformation foldable by $\Xi$ is \textit{terminal} if none of its elongations
 \begin{tabular}{c}
  \begin{minipage}{0.5\linewidth}
   \centering
-   \includegraphics[width=0.6\linewidth]{fig/svg/F0_1.pdf}
+   \includegraphics[width=0.8\linewidth]{fig/svg/F0_1.pdf}
  \end{minipage}
  
  \begin{minipage}{0.5\linewidth}
   \centering
-   \includegraphics[width=0.6\linewidth]{fig/svg/F1_1.pdf}
+   \includegraphics[width=0.8\linewidth]{fig/svg/F1_1.pdf}
 
  \end{minipage}
  \end{tabular}
- \caption{All the 4 bricks of module F: The 2 bricks at the top are for zigs while the 2 bottom are for zags. }
+ \caption{All the four bricks of module F: The two bricks at the top, \texttt{Fnt} and \texttt{Fnb}, are for zigs while the others, \texttt{F0} and \texttt{F1}, are for zags. }
  \label{fig:formatters}
 \end{figure}
 
-
-\section{Folding an infinite binary counter}
-
-\subsection{General idea}
-Between two consecutive overflows, the proposed system behaves in the same way as the finite binary counter of Geary et al. \cite{GeMeScSe2019}.
-Its transcript folds in a zigzag manner macroscopically (downward in figures throughout this paper).
-A zig, folding from right to left, increments the current value of the counter by 1.
-The succeeding zag, folding from left to right, formats the incremented value for the sake of next zig and copies it downward.
-Unlike the counter of Geary et al., when a zig encounters an overflow, it does not abort but extends the current value by 1 bit.
-
-%Each zig or zag is 3-rows thick.
-%Each pass extends to straight while folding into glider and folds its last module folds into turn module and starts next pass.
-
-
-The transcript of our counter is periodic.
-Its period 1-2-3- $\cdots$ -132 is semantically divided into the following 4 subsequences, called \textit{modules}:
-\begin{itemize}
-\item 1--30: Format module or F
-\item 31--66: Left-Turn module or L
-\item 67--96: Half-Adder module or H
-\item 97--132: Right-Turn module  or R
-\end{itemize}
-Modules are to play their roles in expected environments by folding into respective conformations which should be pairwise-distinct enough to be distinguishable by other modules transcribed later.
-Such expected conformations are called a \textit{brick}.
-For example, module F encounters only the four environments shown in Fig.~\ref{fig:formatters} where it takes the four bricks, respectively.
-
-\begin{figure}[tb]
-\begin{tabular}{c}
- \begin{minipage}{0.3\linewidth}
-  \centering
-   \includegraphics[width=0.9\linewidth]{fig/svg/H00_1.pdf}
- \end{minipage}
- 
- \begin{minipage}{0.3\linewidth}
-  \centering
-   \includegraphics[width=0.9\linewidth]{fig/svg/H01_1.pdf}
-
- \end{minipage}
- 
-  \begin{minipage}{0.3\linewidth}
-  \centering
-   \includegraphics[width=0.9\linewidth]{fig/svg/He1_1.pdf}
- \end{minipage}
- \end{tabular}
-
-\begin{tabular}{c}
-\ \\
- \begin{minipage}{0.3\linewidth}
-  \centering
-   \includegraphics[width=0.9\linewidth]{fig/svg/H10_1.pdf}
- \end{minipage}
- 
- \begin{minipage}{0.3\linewidth}
-  \centering
-   \includegraphics[width=0.9\linewidth]{fig/svg/H11_1.pdf}
- \end{minipage}
- 
-  \begin{minipage}{0.3\linewidth}
-  \centering
-   \includegraphics[width=0.9\linewidth]{fig/svg/Hn_1.pdf}
-
- \end{minipage}
- \end{tabular}
- \caption{All the six bricks of module H: \texttt{H00}, \texttt{H01}, \texttt{He1}, \texttt{H10}, \texttt{H11}, and \texttt{Hn} from top left to bottom right.
-In zags, H always folds into \texttt{Hn} while in zigs, it folds into one of the other five bricks.}
- \label{fig:halfadders}
-\end{figure}
-
 \begin{figure}[tb]
 \begin{tabular}{c}
  \begin{minipage}{0.5\linewidth}
   \centering
-   \includegraphics[width=0.8\linewidth]{fig/svg/Lt_3.pdf}
+   \includegraphics[width=0.9\linewidth]{fig/svg/Lt_3.pdf}
  \end{minipage}
  
  \begin{minipage}{0.5\linewidth}
   \centering
-   \includegraphics[width=0.8\linewidth]{fig/svg/Lbc_3.pdf}
+   \includegraphics[width=0.9\linewidth]{fig/svg/Lbc_3.pdf}
 
  \end{minipage}
  \end{tabular}
@@ -315,12 +247,12 @@ In zags, H always folds into \texttt{Hn} while in zigs, it folds into one of the
 \ \\
  \begin{minipage}{0.5\linewidth}
   \centering
-   \includegraphics[width=0.8\linewidth]{fig/svg/Ltre_3.pdf}
+   \includegraphics[width=0.9\linewidth]{fig/svg/Ltre_3.pdf}
  \end{minipage}
  
   \begin{minipage}{0.5\linewidth}
   \centering
-   \includegraphics[width=0.9\linewidth]{fig/svg/Lbe_3.pdf}
+   \includegraphics[width=\linewidth]{fig/svg/Lbe_3.pdf}
    \vspace*{18mm}
 
  \end{minipage}
@@ -331,6 +263,75 @@ In the case of overflow, the next L folds into \texttt{Lcre}.
 In zags, L always folds into \texttt{Lbn}.}
  \label{fig:leftturns}
 \end{figure}
+
+
+\section{Folding an infinite binary counter}
+
+\subsection{General idea}
+Between two consecutive overflows, the proposed system behaves in the same way as the finite binary counter proposed by Geary et al. \cite{GeMeScSe2019}.
+Its transcript folds in a zigzag manner macroscopically (downward in figures throughout this paper).
+A zig, folding from right to left, increments the current value of the counter by 1.
+The succeeding zag, folding from left to right, formats the incremented value for the sake of next zig and copies it downward.
+Unlike the existing counter, when a zig encounters an overflow, it does not abort but rather extends the current value by 1 bit.
+
+%Each zig or zag is 3-rows thick.
+%Each pass extends to straight while folding into glider and folds its last module folds into turn module and starts next pass.
+
+
+The transcript of our counter is periodic.
+Its period 1-2-3- $\cdots$ -132 is semantically divided into the following 4 subsequences, called \textit{modules}:
+\begin{itemize}
+\item 1--30: Format module or F
+\item 31--66: Left-Turn module or L
+\item 67--96: Half-Adder module or H
+\item 97--132: Right-Turn module  or R
+\end{itemize}
+The transcript can be hence represented as $(FLHR)^*$ at the module level. Modules are to play their roles in expected environments by folding into respective conformations which should be pairwise-distinct enough to be distinguishable by other modules transcribed later.
+Such expected conformations are called a \textit{brick}.
+For example, module F encounters only the four environments shown in Fig.~\ref{fig:formatters} where it takes the four bricks, respectively.
+
+\begin{figure}[tb]
+\begin{tabular}{c}
+ \begin{minipage}{0.33\linewidth}
+  \centering
+   \includegraphics[width=0.9\linewidth]{fig/svg/H00_1.pdf}
+ \end{minipage}
+ 
+ \begin{minipage}{0.33\linewidth}
+  \centering
+   \includegraphics[width=0.9\linewidth]{fig/svg/H01_1.pdf}
+
+ \end{minipage}
+ 
+  \begin{minipage}{0.33\linewidth}
+  \centering
+   \includegraphics[width=0.9\linewidth]{fig/svg/He1_1.pdf}
+ \end{minipage}
+ \end{tabular}
+
+\begin{tabular}{c}
+\ \\
+ \begin{minipage}{0.33\linewidth}
+  \centering
+   \includegraphics[width=0.9\linewidth]{fig/svg/H10_1.pdf}
+ \end{minipage}
+ 
+ \begin{minipage}{0.33\linewidth}
+  \centering
+   \includegraphics[width=0.9\linewidth]{fig/svg/H11_1.pdf}
+ \end{minipage}
+ 
+  \begin{minipage}{0.33\linewidth}
+  \centering
+   \includegraphics[width=0.9\linewidth]{fig/svg/Hn_1.pdf}
+
+ \end{minipage}
+ \end{tabular}
+ \caption{All the six bricks of module H: \texttt{H00}, \texttt{H01}, \texttt{He1}, \texttt{H10}, \texttt{H11}, and \texttt{Hn} from top left to bottom right.
+In zags, H always folds into \texttt{Hn} while in zigs, it folds into one of the other five bricks.}
+ \label{fig:halfadders}
+\end{figure}
+
 
 \begin{figure}[tb]
 \begin{tabular}{c}
@@ -363,11 +364,26 @@ The initial counter value is encoded as $b_{k-1}b_{k-2} \cdots b_1b_0$ in binary
 \begin{equation} \label{eq:zagencoding}
 64{-}65{-}66{-}\left( \prod^0_{i = k-1} \bigl(  w_{Hn} w_{Rb} w_{Fb_i} w_{Lbn} \bigr) \right) w_{Hn}
 \end{equation}
-where $w_{Hn}, w_{Rb}, w_{Fb_i}, w_{Lbn}$ are sequences of bead types exposed downward by modules H, R, F, L when they fold into bricks Hn, Rb, F$b_i$, Lbn, respectively, which can be found in Figs.~\ref{fig:halfadders}, \ref{fig:rightturns}, \ref{fig:formatters}, and \ref{fig:leftturns}.
-The seed for $k = 1$ and $b_0 = 0$ is colored in purple in Fig.~\ref{fig:counter1stzig}.
+where $w_{Hn}= 67{-}76{-}77{-}78{-}79{-}88{-}89{-}90{-}91{-}96$, $w_{Rb}=97{-}102{-}103{-}108{-}$ $109{-}114{-}115{-}120{-}121{-}126{-}127{-}132$, $w_{F0} = 1{-}10{-}11{-}12{-}13{-}22{-}23{-}24{-}$ $25{-}30$, $w_{F1}=1{-}22{-}23{-}24{-}25{-}26{-}27{-}28{-}29{-}30$, $w_{Lbn}= 31{-}36{-}37{-}42{-}$ $43{-}48{-}49{-}54{-}55{-}64{-}65{-}66$ are sequences of bead types exposed downward by modules H, R, F, L when they fold into bricks \texttt{Hn}, \texttt{Rb}, \texttt{F}$b_i$, \texttt{Lbn}, respectively, which can be found in Figs.~\ref{fig:halfadders}, \ref{fig:rightturns}, \ref{fig:formatters}, and \ref{fig:leftturns}.
+For instance, the seed for $k = 1$ and $b_0 = 0$ is colored in purple in Fig.~\ref{fig:counter1stzig}.
 %$w_{Hn} = 67{-}76{-}77{-}78{-}79{-}88{-}89{-}90{-}91{-}96$ \\
 %$w_{Rb} = 97{-}102{-}103{-}108{-}109{-}114{-}115{-}120{-}121{-}126{-}127{-}132$\\
 %$w_{Lbn} = 31{-}36{-}37{-}42{-}43{-}48{-}49{-}54{-}55{-}64{-}65{-}66$
+
+\subsection{Brick level overview}
+Starting from the seed, this system cyclically transits four phases: zig ($\leftarrow$), left carriage-return ($\hookrightarrow$), zag ($\rightarrow$), and right carriage-return ($\hookleftarrow$). 
+The prefix $(FLHR)^k F$ of the transcript folds into the first zig (recall that $k$ is the bit-width of the initial value). 
+In zigs in general, all the instances of modules F and H fold into bricks of width 10 and height 3, while all the instances of  L and R fold into bricks of width 12 and height 3. 
+Zigs thus turn out to be a linear structure of height 3. 
+In the process of the prefix folding into the first zig, its $i$-th instance of $H$ is transcribed right below $b_{i-1}$ encoded on the seed in the format (2) so that the H can ``read" $b_{i-1}$. 
+After the whole prefix thus has folded into the first zig, the next L is transcribed right below Turn Signal, which lets the L fold into a special brick for left carriage-return if the zig ended at the top (this occurs when $b_{k-1} b_{k-2} \cdots b_0 < 1^k$) (see Fig.~\ref{fig:counter1stzag}). 
+We should note that this special brick \texttt{Lcre} is provided with another Turn Signal for the sake of next left carriage-return.
+Having been thus carriage-returned, the succeeding subsequence $(HRFL)^k H$ of the transcript folds into the first zag. 
+Even in zags instances of F and H fold into bricks of width 10 and height 3, while those of L and R fold into bricks of width 12 and height 3. 
+As a result, zags turn out to be a linear structure of height 3. 
+More importantly, instances of H and F are aligned vertically and alternately into columns (see Figs.~\ref{fig:counter1stzig}-\ref{fig:overflowex1}), $i$-th of which from the right propagates the ($i{-}1$)-th bit of the counter value downward. 
+After the whole subsequence has folded into the first zag, an instance of $R$ is transcribed and folded into a special brick \texttt{Rcr} for carriage-return due to the turn signal 125-124-123-122, which occurs also at the bottom of \texttt{Rcr} for the sake of next right carriage-return. 
+This amounts to one cycle of the phase transition.
 
 \subsubsection{In the zig ($\leftarrow$)} 
 Here, the counter lets instances of module H increment its current value, which is encoded in the format \eqref{eq:zagencoding} below the seed or previous zag.
@@ -383,12 +399,13 @@ Until the count overflows, module H encounters only four of them, which encode i
 \centering
 \includegraphics[width=\linewidth]{fig/svg/CounterEx5_1.pdf}
 \caption{
-The first zig pass.
-The seed is encoded with "0" same as bottom of F0(
-\textcircled{\scriptsize 1}{-}\textcircled{\scriptsize 10}{-}\textcircled{\scriptsize 11}{-}\textcircled{\scriptsize 12}{-}\textcircled{\scriptsize 13}{-}\textcircled{\scriptsize 22}{-}\textcircled{\scriptsize 23}{-}\textcircled{\scriptsize 24}{-}\textcircled{\scriptsize 25}{-}\textcircled{\scriptsize 30}),
- and the counter increments it by giving a carry.
-Module H outputs "1" as a sum and cancels the carry.
+The first zig.
+0 is encoded as an initial value below the seed in the format \eqref{eq:zagencoding} with $k = 1$ (1-bit width).
+Being fed with carry, the zig increments the value.
+Module H outputs 1, or more precisely a sequence of bead types which shall be interpreted as 1 in the next zag and reformatted, as a sum and cancels the carry.
 }
+%\textcircled{\scriptsize 1}{-}\textcircled{\scriptsize 10}{-}\textcircled{\scriptsize 11}{-}\textcircled{\scriptsize 12}{-}\textcircled{\scriptsize 13}{-}\textcircled{\scriptsize 22}{-}\textcircled{\scriptsize 23}{-}\textcircled{\scriptsize 24}{-}\textcircled{\scriptsize 25}{-}\textcircled{\scriptsize 30},
+
 \label{fig:counter1stzig}
 \end{figure}
 
