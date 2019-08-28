@@ -279,16 +279,22 @@ Unlike the existing counter, when a zig encounters an overflow, it does not abor
 
 
 The transcript of our counter is periodic.
-Its period 1-2-3- $\cdots$ -132 is semantically divided into the following 4 subsequences, called \textit{modules}:
+Its period \texttt{1}-\texttt{2}-\texttt{3}- $\cdots$ -\texttt{132} is semantically divided into the following 4 subsequences, called \textit{modules}:
 \begin{itemize}
-\item 1--30: Format module or F
-\item 31--66: Left-Turn module or L
-\item 67--96: Half-Adder module or H
-\item 97--132: Right-Turn module  or R
+\item \texttt{1}--\texttt{30}: Format module or F
+\item \texttt{31}--\texttt{66}: Left-Turn module or L
+\item \texttt{67}--\texttt{96}: Half-Adder module or H
+\item \texttt{97}--\texttt{132}: Right-Turn module  or R
 \end{itemize}
 The transcript can be hence represented as $(FLHR)^*$ at the module level. Modules are to play their roles in expected environments by folding into respective conformations which should be pairwise-distinct enough to be distinguishable by other modules transcribed later.
 Such expected conformations are called a \textit{brick}.
-For example, module F encounters only the four environments shown in Fig.~\ref{fig:formatters} where it takes the four bricks, respectively.
+For example, module F encounters the four environments shown in Fig.~\ref{fig:formatters} where it takes the four bricks, respectively.
+Here, by saying (an instance of) a module folds into (or takes) a brick in an environment, what we actually mean is that the rule set is designed so as for the transcript of the module to interact with itself as well as the environment into that brick according to the oritatami dynamics  \eqref{eq:OS_CF}.
+The whole system is designed to guarantee that each module is transcribed only in one of the environments it expects.
+This fact is illustrated in the \textit{brick automaton} in Fig.~\ref{fig:brickautomaton}, which describes pairs of an environment and a brick and transitions between them.
+Since this automaton is closed, it suffices to test whether for all pairs of an environment and a brick, the brick is folded in the environment.
+This test has been done using our simulator developed for this project.
+All the certificates can be found at \href{https://komaruyama.github.io/oritatami-infinit-counter/}{\texttt{https://komaruyama.github.io/oritatami-infinit-counter/}}.
 
 \begin{figure}[tb]
 \begin{tabular}{c}
@@ -362,9 +368,15 @@ In zags, H always folds into \texttt{Hn} while in zigs, it folds into one of the
 \paragraph{Seed and Encoding.}
 The initial counter value is encoded as $b_{k-1}b_{k-2} \cdots b_1b_0$ in binary on the seed in the following format
 \begin{equation} \label{eq:zagencoding}
-64{-}65{-}66{-}\left( \prod^0_{i = k-1} \bigl(  w_{Hn} w_{Rb} w_{Fb_i} w_{Lbn} \bigr) \right) w_{Hn}
+\texttt{64}{-}\texttt{65}{-}\texttt{66}{-}\left( \prod^0_{i = k-1} \bigl(  w_{Hn} w_{Rb} w_{Fb_i} w_{Lbn} \bigr) \right) w_{Hn}
 \end{equation}
-where $w_{Hn}= 67{-}76{-}77{-}78{-}79{-}88{-}89{-}90{-}91{-}96$, $w_{Rb}=97{-}102{-}103{-}108{-}$ $109{-}114{-}115{-}120{-}121{-}126{-}127{-}132$, $w_{F0} = 1{-}10{-}11{-}12{-}13{-}22{-}23{-}24{-}$ $25{-}30$, $w_{F1}=1{-}22{-}23{-}24{-}25{-}26{-}27{-}28{-}29{-}30$, $w_{Lbn}= 31{-}36{-}37{-}42{-}$ $43{-}48{-}49{-}54{-}55{-}64{-}65{-}66$ are sequences of bead types exposed downward by modules H, R, F, L when they fold into bricks \texttt{Hn}, \texttt{Rb}, \texttt{F}$b_i$, \texttt{Lbn}, respectively, which can be found in Figs.~\ref{fig:halfadders}, \ref{fig:rightturns}, \ref{fig:formatters}, and \ref{fig:leftturns}.
+where 
+$w_{Hn}= \texttt{67}{-}\texttt{76}{-}\texttt{77}{-}\texttt{78}{-}\texttt{79}{-}\texttt{88}{-}\texttt{89}{-}\texttt{90}{-}\texttt{91}{-}\texttt{96}$, 
+$w_{Rb}=\texttt{97}{-}\texttt{102}{-}\texttt{103}{-}\texttt{108}{-}$ $\texttt{109}{-}\texttt{114}{-}\texttt{115}{-}\texttt{120}{-}\texttt{121}{-}\texttt{126}{-}\texttt{127}{-}\texttt{132}$, 
+$w_{F0} = \texttt{1}{-}\texttt{10}{-}\texttt{11}{-}\texttt{12}{-}\texttt{13}{-}\texttt{22}{-}\texttt{23}{-}\texttt{24}{-}$ $\texttt{25}{-}\texttt{30}$, 
+$w_{F1}=\texttt{1}{-}\texttt{22}{-}\texttt{23}{-}\texttt{24}{-}\texttt{25}{-}\texttt{26}{-}\texttt{27}{-}\texttt{28}{-}\texttt{29}{-}\texttt{30}$, 
+$w_{Lbn}= \texttt{31}{-}\texttt{36}{-}\texttt{37}{-}\texttt{42}{-}$ $\texttt{43}{-}\texttt{48}{-}\texttt{49}{-}\texttt{54}{-}\texttt{55}{-}\texttt{64}{-}\texttt{65}{-}\texttt{66}$
+are sequences of bead types exposed downward by modules H, R, F, L when they fold into bricks \texttt{Hn}, \texttt{Rb}, \texttt{F}$b_i$, \texttt{Lbn}, respectively, which can be found in Figs.~\ref{fig:halfadders}, \ref{fig:rightturns}, \ref{fig:formatters}, and \ref{fig:leftturns}.
 For instance, the seed for $k = 1$ and $b_0 = 0$ is colored in purple in Fig.~\ref{fig:counter1stzig}.
 %$w_{Hn} = 67{-}76{-}77{-}78{-}79{-}88{-}89{-}90{-}91{-}96$ \\
 %$w_{Rb} = 97{-}102{-}103{-}108{-}109{-}114{-}115{-}120{-}121{-}126{-}127{-}132$\\
@@ -378,22 +390,20 @@ Zigs thus turn out to be a linear structure of height 3.
 In the process of the prefix folding into the first zig, its $i$-th instance of $H$ is transcribed right below $b_{i-1}$ encoded on the seed in the format (2) so that the H can ``read" $b_{i-1}$. 
 After the whole prefix thus has folded into the first zig, the next L is transcribed right below Turn Signal, which lets the L fold into a special brick for left carriage-return if the zig ended at the top (this occurs when $b_{k-1} b_{k-2} \cdots b_0 < 1^k$) (see Fig.~\ref{fig:counter1stzag}). 
 We should note that this special brick \texttt{Lcre} is provided with another Turn Signal for the sake of next left carriage-return.
-Having been thus carriage-returned, the succeeding subsequence $(HRFL)^k H$ of the transcript folds into the first zag. 
+Having been thus carriage-returned, the succeeding subsequence $(HRFL)^k H$ of the transcript folds into the first zag.
 Even in zags instances of F and H fold into bricks of width 10 and height 3, while those of L and R fold into bricks of width 12 and height 3. 
 As a result, zags turn out to be a linear structure of height 3. 
 More importantly, instances of H and F are aligned vertically and alternately into columns (see Figs.~\ref{fig:counter1stzig}-\ref{fig:overflowex1}), $i$-th of which from the right propagates the ($i{-}1$)-th bit of the counter value downward. 
-After the whole subsequence has folded into the first zag, an instance of $R$ is transcribed and folded into a special brick \texttt{Rcr} for carriage-return due to the turn signal 125-124-123-122, which occurs also at the bottom of \texttt{Rcr} for the sake of next right carriage-return. 
+After the whole subsequence has folded into the first zag, an instance of $R$ is transcribed and folded into a special brick \texttt{Rcr} for carriage-return due to the turn signal \texttt{125}-\texttt{124}-\texttt{123}-\texttt{122}, which occurs also at the bottom of \texttt{Rcr} for the sake of next right carriage-return. 
 This amounts to one cycle of the phase transition.
 
-\subsubsection{In the zig ($\leftarrow$)} 
-Here, the counter lets instances of module H increment its current value, which is encoded in the format \eqref{eq:zagencoding} below the seed or previous zag.
-When the current value is $k$ bits in width, a subsequence $(FLHR)^kF$ of the transcript folds into the zig.
-All the bricks which modules take in a zig are of height 3 (see Fig.~\ref{fig:formatters},  \ref{fig:halfadders}, \ref{fig:leftturns}, and \ref{fig:rightturns}) so that the zig turns out to be a linear structure of height 3.
-Carry is propagated throughout the zig as a height for modules to start.
-All modules but H end at the same height as it began, that is, do not change carry.
-Module H can take the five bricks \texttt{H00}, \texttt{H01}, \texttt{H10}, \texttt{H11}, and \texttt{He1} shown in Fig.~\ref{fig:halfadders} in zigs but nothing else.
-This is because the whole system is designed in such a way that module H encounters only the five environments.
-Until the count overflows, module H encounters only four of them, which encode input 0 as $w_{F0}$ or 1 as $w_{F1}$ and carry or no-carry as the height for the module to start folding (bottom or top), where it takes \texttt{H00}, \texttt{H01}, \texttt{H10}, and \texttt{H11}, respectively, as shown in Fig.~\ref{fig:halfadders} (\texttt{H}$xc$ is folded when the input is $x$ and the carry is given if $c=1$ or not otherwise).
+\subsection{Increment of the counter}
+
+In a zig, module H plays its primary role as half-adder and carry transfers through instances of others (F, L, and R) from an instance of H to another for more significant bit.
+Carry is transferred as a height for modules to start.
+In zigs, modules F, L, and R take respective two bricks (\texttt{Fnt} and \texttt{Fnb} for F, \texttt{Lt} and \texttt{Lbn} for L, and \texttt{Rt} and \texttt{Rb} for R; see Fig.~\ref{fig:formatters}, \ref{fig:leftturns}, and \ref{fig:rightturns}) both of which start and end at the same height: one at the top while the other at the bottom.
+A zig is fed with carry by being forced to start at the bottom by the last \texttt{Rcr} or the seed.
+Until the count overflows, module H encounters only four environments, which encode input 0 as $w_{F0}$ or 1 as $w_{F1}$ and carry or no-carry as of whether the module starts at the bottom or top, where it takes \texttt{H00}, \texttt{H01}, \texttt{H10}, and \texttt{H11}, respectively, as shown in Fig.~\ref{fig:halfadders} (\texttt{H}$xc$ is folded when the input is $x$ and the carry is given if $c=1$ or not otherwise).
 
 \begin{figure}[tb]
 \centering
@@ -689,6 +699,7 @@ In addition, each symbol written as a state transition is conformation such as F
 	\node[below, shift=(-90:0.8)] at (fa) {f};
 	\node[below, shift=(-90:0.8)] at (ci) {c};
 \end{tikzpicture}
+\label{fig:brickautomaton}
 }
 %\caption{Transition conformations}
 %\label{fig:transitionconformation}
